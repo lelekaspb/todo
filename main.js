@@ -2,26 +2,27 @@ var form = document.getElementById("addForm");
 var itemsList = document.getElementById("items");
 var filter = document.getElementById("filter");
 
-// Добавление новой задачи прослушка события
+// Add new task on form submission
 form.addEventListener("submit", addItem);
 
-// Удаление элемента - прослушка клика
+// Delete task - listen for the click
 itemsList.addEventListener("click", removeItem);
 
-// Фильтрация списка дел - прослушка ввода
+// Filter todo list - listen for input
 filter.addEventListener("keyup", filterItems);
 
-// Добавление новой задачи функция
+// Add new task function
 function addItem(e) {
-  // Отменяем отправку формы
+  //  cancel form submission
   e.preventDefault();
 
-  // Находим инпут с текстом для новой задачи
+  // Find input with text for new task
   var newItemInput = document.getElementById("newItemText");
-  // Получаем текст из инпута
+
+  // Get text from the input
   var newItemText = newItemInput.value;
 
-  // Очистим поле добавления новой задачи
+  // Clear the input
   newItemInput.value = "";
 
   let ID = 0;
@@ -42,40 +43,43 @@ function addItem(e) {
 }
 
 function createTask(text, ID) {
-  // Создаем элемент для новой задачи
+  // Create element for new task
   var newElement = document.createElement("li");
   newElement.className = "list-group-item";
 
-  // Добавим текст в новый элемент
+  // Add text to new element
   var newTextNode = document.createTextNode(text);
   newElement.appendChild(newTextNode);
 
-  // Создаем кнопку
+  // Create button
   var deleteBtn = document.createElement("button");
-  // Добавляем текст
-  deleteBtn.appendChild(document.createTextNode("Удалить"));
-  // Добавляем CSS class
+
+  // Add text
+  deleteBtn.appendChild(document.createTextNode("Delete"));
+
+  // Add CSS class
   deleteBtn.className = "btn btn-light btn-sm float-right";
-  // Добавляем data атрибут
+
+  // Add attribute
   deleteBtn.dataset.action = "delete";
 
   deleteBtn.dataset.id = ID;
 
-  // Помещаем кнопку внутрь тега li
+  // Place the button into "li" element
   newElement.appendChild(deleteBtn);
   //console.log("addItem -> newElement", newElement);
 
-  // Добавляем новую задачу в список со всеми задачами
+  // Add new task to the todo list
   itemsList.prepend(newElement);
 }
 
-// Удаление элемента - ф-я
+// Delete element - function
 function removeItem(e) {
   if (
     e.target.hasAttribute("data-action") &&
     e.target.getAttribute("data-action") == "delete"
   ) {
-    if (confirm("Удалить задачу?")) {
+    if (confirm("Do you want to delete the task?")) {
       e.target.parentNode.remove();
 
       const ID = parseInt(e.target.dataset.id);
@@ -85,32 +89,30 @@ function removeItem(e) {
       if (index !== -1) {
         todoStorage.content.splice(index, 1);
       }
-      //console.log(todoStorage);
       todoStorage.updateLocalStorage();
       console.log(todoStorage.content);
     }
   }
 }
 
-// Фильтрация списка дел ф-я
+// Filter todo list - function
 function filterItems(e) {
-  // Получаем фразу для поиска и переводим ее в нижний регистр
+  // Get string for search and transform it to lowercase
   var searchedText = e.target.value.toLowerCase();
 
-  // 1. Получаем списко всех задач
+  // 1. Get list of all tasks
   var items = itemsList.querySelectorAll("li");
 
-  // 2. Перебираем циклом все найденные теги li с задачами
+  // 2. Loop through all found tasks
   items.forEach(function (item) {
-    // Получаем текст задачи из списка и переводим его в нижний регистр
+    // Get text of a task and transform in to lowercase
     var itemText = item.firstChild.textContent.toLowerCase();
-
-    // Проверяем вхождение искомой подстроки в текст задачи
+    // Check if the task contains the search text
     if (itemText.indexOf(searchedText) != -1) {
-      // Если вхождение есть - показываем элемент с задачей
+      // if it does, show the task element
       item.style.display = "block";
     } else {
-      // Если вхождения нет - скрываем элемент с задачей
+      // if does not, hide the task element
       item.style.display = "none";
     }
   });
@@ -123,39 +125,38 @@ const TodosElement = function (task, id) {
 
 const todos = [
   {
-    task: "Приготовить завтрак",
+    task: "Make breakfast",
     id: 0,
   },
   {
-    task: "Съездить на вокзал",
+    task: "Go to the train station",
     id: 1,
   },
   {
-    task: "Заправить авто",
+    task: "Refuel the car",
     id: 2,
   },
   {
-    task: "Переобуться",
+    task: "Change tires",
     id: 3,
   },
   {
-    task: "Заехать в гараж",
+    task: "Visit garage",
     id: 4,
   },
   {
-    task: "Сходить в спортзал",
+    task: "Do fitness exercises",
     id: 5,
   },
   {
-    task: "Посмотреть урок по JS",
-    id: 6,
+    task: "Watch JS tutorial",
   },
   {
-    task: "Сделать домашку",
+    task: "Do homework",
     id: 7,
   },
   {
-    task: "Приготовить ужин",
+    task: "Make dinner",
     id: 8,
   },
 ];
